@@ -2,7 +2,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "jsrsasign": "^10.1.4",
-    "jsrsasign-util": "^1.0.0"
+    "jsrsasign-util": "^1.0.0",
+    "morgan": "^1.10.0"
   },
   "name": "jwt-auth"
 }

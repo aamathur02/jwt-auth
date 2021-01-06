@@ -1,6 +1,8 @@
 import React, {Component} from "react";
+import { GenerateJWT, DecodeJWT } from "../services/JWTService";
 
 class Login extends Component {
+
   state = {
     username: "",
     password: ""
@@ -14,7 +16,27 @@ class Login extends Component {
   
   handleSubmit = e => {
     e.preventDefault();
-  }
+
+    const { username, password } = this.state;
+    const claims = {username, password};
+
+    const header = {
+      alg: "HS512",
+      type: "JWT"
+    };
+
+    GenerateJWT(header, claims, null, res => {
+      if (res.status === 200) {
+        this.setState({Response: res.data}, () => {
+          DecodeJWT(this.state.Response, data => 
+            this.setState({Data: data.data})
+          );
+        });
+      } else {
+        this.setState({Response: "Error!"})
+      }
+    });
+  };
 
   render() {
       return (
@@ -55,7 +77,24 @@ class Login extends Component {
             State Data
             <br />
             <br />
-            {JSON.stringify(this.state, null, 2)}
+            {JSON.stringify(
+              {
+                username: this.state.username,
+                password: this.state.password
+              },
+              null,
+              2
+              )}
+              {this.state.Response && (
+                <>
+                  <br />
+                  <br />
+                  Response Data (JWT)
+                  <br />
+                  <br />
+                  {this.state.Response}
+                </>
+              )}
             </pre>
           </div>
         </div>

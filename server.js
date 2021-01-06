@@ -1,21 +1,27 @@
-import express from "express";
-import JSRSASign from "jsrsasign"
-import handle_auth from "handle_auth.js"
+const express = require("express");
+const morgan = require("morgan");
+const { generateJWT, decodeJWT, validateJWT } = require("./handle_auth.js");
 const app = express();
-const port = 3000;
+const port = process.env.Port || 3000;
+app.use(morgan('dev'));
+app.use(express.json());
 
 app.get("/", (req, res) => res.send("Welcome to the auth test server!"));
 
-app.post("/generateJWT", (req, res) =>
-    res.json(handle_auth.generateJWT(req.body.header, req.body.claims. req.body.key))
-);
+app.post("/api/generateJWT", (req, res) => {
+    let {header, claims, key} = req.body;
+    key = key || "&Aayush-auth-app";
+    res.json(generateJWT(header, claims, key));
+});
 
-app.post("/validateJWT", (req, res) =>
-    res.json(handle_auth.validateJWT(req.body.header, req.body.claims. req.body.key))
-);
+app.post("/api/validateJWT", (req, res) => {
+    let {header, token, key} = req.body;
+    key = key || "&Aayush-auth-app";
+    res.json(validateJWT(header, token, key));
+});
 
-app.post("/decodeJWT", (req, res) =>
-    res.json(handle_auth.decodeJWT(req.body.sJWS))
+app.post("/api/decodeJWT", (req, res) =>
+    res.json(decodeJWT(req.body.sJWS))
 );
 
 

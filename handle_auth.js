@@ -1,6 +1,6 @@
-import JSRSASign from "jsrsasign";
+const JSRSASign = require("jsrsasign");
 
-const generateJwt = (header, claims, key) => {
+const generateJWT = (header, claims, key) => {
     const string_header = JSON.stringify(header);
     const string_claims = JSON.stringify(claims);
 
@@ -9,7 +9,7 @@ const generateJwt = (header, claims, key) => {
     return JWT;
 };
 
-const decodeJwt = sJWS => {
+const decodeJWT = sJWS => {
     const split_JWT = sJWS.spit(".");
 
     const uHeader = JSRSASign.b64utos(split_JWT[0]);
@@ -22,13 +22,13 @@ const decodeJwt = sJWS => {
 };
 
 
-const validateJwt = (header, token, key) => {
+const validateJWT = (header, token, key) => {
     return JSRSASign.jws.JWS.verifyJWT(token,key, header);
 };
 
 module.exports = {
-    generateJwt,
-    decodeJwt,
-    validateJwt
+    generateJWT,
+    decodeJWT,
+    validateJWT
 };
 
