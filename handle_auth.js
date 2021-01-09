@@ -10,7 +10,7 @@ const generateJWT = (header, claims, key) => {
 };
 
 const decodeJWT = sJWS => {
-    const split_JWT = sJWS.spit(".");
+    const split_JWT = sJWS.split(".");
 
     const uHeader = JSRSASign.b64utos(split_JWT[0]);
     const uClaim = JSRSASign.b64utos(split_JWT[1]);
